@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class DataSeederConfig {
+public class DataSeeder {
 
     @Bean
     public CommandLineRunner seedAdminData(UserRepository userRepository, PasswordEncoder passwordEncoder) {
