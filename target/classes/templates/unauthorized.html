@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Access Denied</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .unauthorized-box {
+            display: inline-block;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .unauthorized-box h2 {
+            color: #d9534f;
+        }
+        .unauthorized-box a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .unauthorized-box a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="unauthorized-box">
+    <h2>⚠️ Access Denied</h2>
+    <p>You are not authorized to access this page.</p>
+    <a th:href="@{/login}">Go to User Login</a> |
+    <a th:href="@{/admin/login}">Go to Admin Login</a>
+</div>
+</body>
+</html>

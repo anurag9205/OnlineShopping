@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="form-container">
+    <h2>Add Product</h2>
+    <form th:action="@{/admin/add-product}" method="post" th:object="${product}">
+        <div class="input-group">
+            <label>Product Name</label>
+            <input type="text" th:field="*{name}" required />
+        </div>
+
+        <div class="input-group">
+            <label>Description</label>
+            <textarea th:field="*{description}" required></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Price</label>
+            <input type="number" th:field="*{price}" step="0.01" required />
+        </div>
+
+        <div class="input-group">
+            <label>Image Name</label>
+            <input type="text" th:field="*{imageName}" placeholder="e.g., book1.png" required />
+        </div>
+
+        <div class="input-group">
+            <label>Category</label>
+            <select name="categoryId" required>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"
+                        th:selected="${product.category != null} ? ${category.id} == ${product.category.id} : false">
+                </option>
+            </select>
+        </div>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <form th:action="@{/admin/home}" method="get" style="margin-top: 10px;">
+        <button type="submit">Back to Dashboard</button>
+    </form>
+</div>
+</body>
+</html>

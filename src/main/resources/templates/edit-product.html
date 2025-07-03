@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="form-container">
+    <h2>Edit Product</h2>
+
+    <form th:action="@{/admin/product/update}" method="post" th:object="${product}">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="input-group">
+            <label>Product Name</label>
+            <input type="text" th:field="*{name}" required />
+        </div>
+
+        <div class="input-group">
+            <label>Description</label>
+            <textarea th:field="*{description}" required></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Price</label>
+            <input type="number" th:field="*{price}" step="0.01" required />
+        </div>
+
+        <div class="input-group">
+            <label>Image Name</label>
+            <input type="text" th:field="*{imageName}" placeholder="e.g., book1.png" required />
+        </div>
+
+        <div class="input-group">
+            <label>Category</label>
+            <select name="categoryId" required>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"
+                        th:selected="${product.category != null} ? ${category.id} == ${product.category.id} : false">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <div class="login-links" style="margin-top: 15px;">
+        <a th:href="@{/admin/products}">← Back to Products</a>
+    </div>
+</div>
+</body>
+</html>

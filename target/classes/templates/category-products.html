@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Products in ' + ${category}"></title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Products in ' + ${category}"></h2>
+
+    <div th:if="${#lists.isEmpty(products)}">
+        <p>No products available in this category.</p>
+    </div>
+    <!-- Header (Above Loop) -->
+    <div class="product-header">
+        <div>Product</div>
+        <div>Price</div>
+        <div>Description</div>
+        <div>Quantity</div>
+        <div>Reviews</div>
+    </div>
+
+    <!-- Inside each product loop -->
+    <div class="product-card" th:each="product : ${products}">
+        <div class="product-section">
+            <img th:src="@{'/images/' + ${product.imageName}}" alt="Product Image" />
+            <div class="product-name" th:text="${product.name}"></div>
+        </div>
+        <div class="product-section">
+            ₹<span class="price" th:text="${product.price}"></span>
+        </div>
+        <div class="product-section">
+            <span class="description" th:text="${product.description}"></span>
+        </div>
+        <div class="product-section">
+            <form class="order-form" th:action="@{/user/cart/add}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}" />
+                <input type="number" name="quantity" value="1" min="1" />
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+        <div class="product-section">
+            <div class="review-label">Reviews:</div>
+            <div th:if="${reviewMap[product.id] != null}">
+                <div th:if="${reviewMap[product.id] != null}">
+                    <!-- Show first 2 -->
+                    <div th:each="review, iterStat : ${reviewMap[product.id]}" th:if="${iterStat.index < 2}">
+                        <p>
+                            <strong th:text="${review.user.name}">User</strong> - ⭐ <span th:text="${review.rating}"></span><br>
+                            <i th:text="${review.comment}">Comment</i>
+                        </p>
+                    </div>
+
+                    <!-- Show more in <details> -->
+                    <details th:if="${reviewMap[product.id].size() > 2}">
+                        <summary>➤ View More Reviews</summary>
+                        <div th:each="review, iterStat : ${reviewMap[product.id]}" th:if="${iterStat.index >= 2}">
+                            <p>
+                                <strong th:text="${review.user.name}">User</strong> - ⭐ <span th:text="${review.rating}"></span><br>
+                                <i th:text="${review.comment}">Comment</i>
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div th:if="${reviewMap[product.id] == null}">
+                <p class="no-review">No reviews yet.</p>
+            </div>
+            <details>
+                <summary>➤ Leave a Review</summary>
+                <form th:action="@{/user/review}" method="post" style="margin-top: 10px;">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <label>Rating (1-5):</label>
+                    <input type="number" name="rating" min="1" max="5" required /><br><br>
+                    <label>Comment:</label><br>
+                    <textarea name="comment" rows="2" style="width: 100%;" required></textarea><br>
+                    <button type="submit">Post Review</button>
+                </form>
+            </details>
+        </div>
+    </div>
+
+
+    <!-- 🔙 Back to Categories -->
+    <form th:action="@{/user/home}" method="get" style="margin-top: 20px;">
+        <button type="submit">← Back to Categories</button>
+    </form>
+</div>
+</body>
+</html>

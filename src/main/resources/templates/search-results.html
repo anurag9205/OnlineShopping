@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Search Results for "<span th:text="${query}"></span>"</h2>
+
+    <div th:if="${#lists.isEmpty(products)}">
+        <p>No products found.</p>
+    </div>
+
+    <div th:each="product : ${products}" class="product-card">
+        <strong th:text="${product.name}"></strong><br>
+        ₹<span th:text="${product.price}"></span><br>
+        <span th:text="${product.description}"></span><br>
+        Category: <span th:text="${product.category.name}"></span>
+
+        <!-- ✅ Add to Cart form -->
+        <form class="order-form" th:action="@{/user/cart/add}" method="post" style="margin-top: 10px;">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <input type="number" name="quantity" value="1" min="1" />
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <form th:action="@{/user/home}" method="get" style="margin-top: 20px;">
+        <button type="submit">← Back to Dashboard</button>
+    </form>
+</div>
+</body>
+</html>

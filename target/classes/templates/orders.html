@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders </title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+
+</head>
+<body>
+<div class="orders">
+    <h2>My Orders</h2>
+
+
+    <p th:if="${message}" th:text="${message}" class="message"></p>
+
+
+    <div th:if="${#lists.isEmpty(orders)}">
+        <p>No orders yet.</p>
+    </div>
+
+
+    <div th:each="order : ${orders}">
+        <div class="order-card">
+            <p><strong>Product:</strong> <span th:text="${order.product?.name}">Product Name</span></p>
+            <p><strong>Quantity:</strong> <span th:text="${order.quantity}">1</span></p>
+            <p>
+                <strong>Date:</strong>
+                <span th:if="${order.date != null}" th:text="${#dates.format(order.date, 'dd-MM-yyyy HH:mm')}"></span>
+                <span th:if="${order.date == null}">Not available</span>
+            </p>
+            <p><strong>Status:</strong> <span th:text="${order.paid ? 'Paid' : 'Pending Payment'}">Pending</span></p>
+
+
+            <form th:if="${!order.paid}" th:action="@{/user/pay-order}" method="post">
+                <input type="hidden" name="orderId" th:value="${order.id}" />
+                <button type="submit">Pay Now</button>
+            </form>
+
+
+            <form th:if="${!order.paid and order.cancelEligible}" th:action="@{/user/cancel-order}" method="post">
+                <input type="hidden" name="orderId" th:value="${order.id}" />
+                <button type="submit" style="background-color: #dc3545;">Cancel Order</button>
+            </form>
+        </div>
+        <hr>
+    </div>
+
+
+    <form th:action="@{/user/home}" method="get" class="back-button">
+        <button type="submit">← Back to Dashboard</button>
+    </form>
+</div>
+</body>
+</html>

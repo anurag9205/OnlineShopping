@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+        .cart-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+        .cart-item {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-actions button {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="cart-container">
+    <h2>Your Shopping Cart</h2>
+
+    <div th:if="${#lists.isEmpty(cart)}">
+        <p>Your cart is empty.</p>
+    </div>
+
+    <div th:each="item, iter : ${cart}" class="cart-item">
+        <p><strong>Product:</strong> <span th:text="${item.product.name}"></span></p>
+        <p><strong>Price:</strong> ₹<span th:text="${item.product.price}"></span></p>
+        <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
+
+        <form th:action="@{/user/cart/remove}" method="post">
+            <input type="hidden" name="index" th:value="${iter.index}" />
+            <button type="submit">Remove</button>
+        </form>
+    </div>
+
+    <form th:action="@{/user/checkout}" method="get" style="text-align:right; margin-top: 30px;">
+        <button type="submit">Proceed to Checkout</button>
+    </form>
+
+
+    <form th:action="@{/user/home}" method="get" style="margin-top: 15px;">
+        <button type="submit">Back to Dashboard</button>
+    </form>
+</div>
+</body>
+</html>

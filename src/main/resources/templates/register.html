@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+
+<div class="register-container">
+    <h2>User Registration</h2>
+
+    <p th:if="${error}" class="error" th:text="${error}"></p>
+    <p th:if="${success}" class="success" th:text="${success}"></p>
+
+    <form th:action="@{/initiate-verification}" method="post">
+        <div class="input-group">
+            <label>Name</label>
+            <input type="text" name="name" required />
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" required />
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password" required
+                   pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}"
+                   title="Must contain 1 uppercase, 1 number, 1 special char, min 8 chars" />
+        </div>
+
+        <button type="submit">Send OTP</button>
+    </form>
+
+    <div class="login-links">
+        <p>Already registered? <a th:href="@{/login}">Login here</a></p>
+    </div>
+</div>
+
+</body>
+</html>

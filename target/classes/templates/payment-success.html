@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Success</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="success-box">
+    <h2>Payment Successful!</h2>
+    <p>You have paid <strong>₹<span th:text="${totalAmount}"></span></strong></p>
+    <a th:href="@{/user/orders}" class="order-link">View My Orders</a>
+</div>
+</body>
+</html>
